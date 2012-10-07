@@ -4,21 +4,22 @@
 		
 		$(this).each(function() { //- do it for 'em all
 			
+			var options = { //- set default options
+				srcAttribute : "src",
+				createNewImages : true
+			}
+			options = $.extend(options, additionalOptions ); //- override default options with user-supplied options
+			
 			var $this = $(this); //- get this variable for later
 			
-			var src = $this.attr("src"); //- get the original src attribute so we can always come back to it
+			var src = $this.attr(options.srcAttribute); //- get the original src attribute so we can always come back to it
 			var extension = src.split('.').pop(); //- get the file extension so we can add the suffix before the extension
 			
-			$this.attr("src","#"); //- remove image src so it doesn't load (this might get fired after it loads, not sure yet)
+			//$this.attr("src",""); //- remove image src so it doesn't load (this might get fired after it loads, not sure yet)
 			
 			//defaultBreakpoint = {"default":$this.parent().width()} //- add a "default" breakpoint at the original size (no suffix)
 			defaultBreakpoint = { "default":1000000 } //- set a "default" breakpoint for anything larger than the largest breakpoint
 			breakpoints = $.extend(breakpoints,defaultBreakpoint);
-			
-			var options = { //- set default options
-				createNewImages : true
-			}
-			options = $.extend(options, additionalOptions ); //- override default options with user-supplied options
 			
 			resizeImage($this,breakpoints,src,extension);
 						
@@ -48,7 +49,6 @@
 		});
 		
 		var newSrc = src.replace("."+extension,suffix+"."+extension); //- replace "dot extension" with "suffix dot extension"
-		$("#output").text(newSrc);
 		replaceImage($this,newSrc);
 		
 	}
