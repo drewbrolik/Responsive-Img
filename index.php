@@ -16,8 +16,8 @@
 $(function() {
 	
 	$("#img1").responsiveImg();
-	$("#img2").responsiveImg({"_400":400,"_200":200,"_800":800,"_600":600});
-	$("#img3").responsiveImg({"_400":400,"_200":200,"_800":800,"_600":600},{"srcAttribute":"data-src"});
+	$("#img2").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600}});
+	$("#img3").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600},srcAttribute:"data-src"});
 	
 });
 
@@ -28,7 +28,7 @@ $(function() {
 <p>Specify a filename suffix that gets added to an image based on its container's width</p>
 
 <h2>Default</h2>
-<p>Does nothing right now, soon will have default breakpoints</p>
+<p>Right now it defaults to 200,400,600,800 but soon it will be standard mobile, tablet, desktop sizes.</p>
 <code>$("#img1").responsiveImg();</code>
 <div style="width:20%; border:2px dotted rgba(0,0,0,.5);">
 	<img id="img1" src="images/image.png" style="max-width:100%;" />
@@ -36,7 +36,7 @@ $(function() {
 
 <h2>Custom Breakpoints</h2>
 <p>Specify sizes at which images should change, and have a custom suffix appended to image filenames for each breakpoint.</p>
-<code>$("#img2").responsiveImg({"_400":400,"_200":200,"_800":800,"_600":600});</code>
+<code>$("#img2").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600}});</code>
 <div style="width:20%; border:2px dotted rgba(0,0,0,.5);">
 	<img id="img2" src="images/image.png" style="max-width:100%;" />
 </div>
@@ -44,7 +44,7 @@ $(function() {
 <h2>Use a Placeholder Image</h2>
 <p>For faster loading, especially on mobile phones, you'll need to set the src attribute of all images to a loading icon or a small white pixel (or whatever you want, obviously). Then use another attribute (I recommend data-src to specify the path to the image file).</p>
 <p>Unforutnately, the only way to prevent loading an src attribute is in the HTML. Even if we change it before the image loads, the original image still loads.</p>
-<code>$("#img3").responsiveImg({"_400":400,"_200":200,"_800":800,"_600":600},{"srcAttribute":"data-src"});</code>
+<code>$("#img3").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600},"srcAttribute":"data-src"});</code>
 <div style="width:80%; border:2px dotted rgba(0,0,0,.5);">
 	<img id="img3" src="images/ajax-loader.gif" data-src="images/image.png" style="max-width:100%;" />
 </div>

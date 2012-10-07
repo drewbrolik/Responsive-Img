@@ -1,10 +1,16 @@
 (function($) {
 
-	$.fn.responsiveImg = function(breakpoints,additionalOptions) {
+	$.fn.responsiveImg = function(additionalOptions) {
 		
 		$(this).each(function() { //- do it for 'em all
 			
 			var options = { //- set default options
+				breakpoints : {
+					"_200":200,
+					"_400":400,
+					"_600":600,
+					"_800":800
+				},
 				srcAttribute : "src",
 				createNewImages : true
 			}
@@ -15,9 +21,7 @@
 			var src = $this.attr(options.srcAttribute); //- get the original src attribute so we can always come back to it
 			var extension = src.split('.').pop(); //- get the file extension so we can add the suffix before the extension
 			
-			//$this.attr("src",""); //- remove image src so it doesn't load (this might get fired after it loads, not sure yet)
-			
-			//defaultBreakpoint = {"default":$this.parent().width()} //- add a "default" breakpoint at the original size (no suffix)
+			var breakpoints = options.breakpoints; //- create a new variable for breakpoints object			
 			defaultBreakpoint = { "default":1000000 } //- set a "default" breakpoint for anything larger than the largest breakpoint
 			breakpoints = $.extend(breakpoints,defaultBreakpoint);
 			
