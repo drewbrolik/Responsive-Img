@@ -4,10 +4,9 @@
 		
 		var options = { //- set default options
 			breakpoints : {
-				"_200":200,
-				"_400":400,
-				"_600":600,
-				"_800":800
+				"_mobile":360,
+				"_tablet":780,
+				"_desktop":900
 			},
 			srcAttribute : "src",
 			createNewImages : true

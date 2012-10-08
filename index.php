@@ -19,6 +19,10 @@ $(function() {
 	$("#img2").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600}});
 	$("#img3").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600},srcAttribute:"data-src"});
 	
+	$("img").click(function() {
+		alert($(this).attr("src"));
+	});
+	
 });
 
 </script>
@@ -27,17 +31,19 @@ $(function() {
 
 <p>Specify a filename suffix that gets added to an image based on its container's width</p>
 
+<p><em>Click an image to see its src attribute.</em></p>
+
 <h2>Default</h2>
-<p>Right now it defaults to 200,400,600,800 but soon it will be standard mobile, tablet, desktop sizes.</p>
+<p>Right now it defaults to 360 (_mobile),780 (_tablet) and 900 (_desktop) but soon it will be more correct mobile, tablet, desktop sizes.</p>
 <code>$("#img1").responsiveImg();</code>
-<div style="width:20%; border:2px dotted rgba(0,0,0,.5);">
+<div style="width:50%; border:2px dotted rgba(0,0,0,.5);">
 	<img id="img1" src="images/image.png" style="max-width:100%;" />
 </div>
 
 <h2>Custom Breakpoints</h2>
 <p>Specify sizes at which images should change, and have a custom suffix appended to image filenames for each breakpoint.</p>
 <code>$("#img2").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600}});</code>
-<div style="width:20%; border:2px dotted rgba(0,0,0,.5);">
+<div style="width:40%; border:2px dotted rgba(0,0,0,.5);">
 	<img id="img2" src="images/image.png" style="max-width:100%;" />
 </div>
 
