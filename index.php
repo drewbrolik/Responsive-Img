@@ -16,8 +16,8 @@
 $(function() {
 	
 	$("#img1").responsiveImg();
-	$("#img2").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600}});
-	$("#img3").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600},srcAttribute:"data-src"});
+	$("#img2,#img3").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800}});
+	$("#img4").responsiveImg({srcAttribute:"data-src"});
 	
 	$("img").click(function() {
 		alert($(this).attr("src"));
@@ -27,32 +27,51 @@ $(function() {
 
 </script>
 
+<style type="text/css">
+
+	strong	{ background:#FFECC1; }
+
+</style>
+
 <h1>Responsive Img</h1>
 
-<p>Specify a filename suffix that gets added to an image based on its container's width</p>
+<p>Responsive Img lets you specify breakpoints where an img tag should load a different souce file, based on the tag's container width.</p>
+<p>For each breakpoint, you choose a suffix to be added to the end of the image's filename. If an image with the new filename already exists, Responsive Img replaces the img tag's source attribute with the new filename.</p>
+<p style="font-weight:bold;">If the image doesn't exist, Responsive Img will create that image with the new filename and put in the same folder as the original image. Once created, Responsive Img can just replace the img tag's source for all visitors in the future.</p>
+<p>Up to this point, there <strong>is no need to change any html markup.</strong> You can make any existing website have responsive images with one include and one line of code.</p>
+<p>But there's one drawback. The original image file will always get loaded (even though Responsive Img swaps in a smaller image right away). To prevent this, we do need to change a little markup. Just set the img tag's source attribute to a loading image or a single pixel image, set another attribute (like data-src) as the image filename, and specify "srcAttribute":"data-src" when you call the plugin.</p>
+<p>That's it. Responsive images.</p>
 
-<p><em>Click an image to see its src attribute.</em></p>
+<p style="font-style:italic;">Click an image to see its src attribute.</p>
 
 <h2>Default</h2>
-<p>Right now it defaults to 360 (_mobile),780 (_tablet) and 900 (_desktop) but soon it will be more correct mobile, tablet, desktop sizes.</p>
-<code>$("#img1").responsiveImg();</code>
-<div style="width:50%; border:2px dotted rgba(0,0,0,.5);">
-	<img id="img1" src="images/image.png" style="max-width:100%;" />
+<p>If no options are specified, Responsive Img defaults to breakpoints at 360 pixels (with the suffix "_small"), 780 pixels ("_medium") and 900 pixels ("_large").</p>
+<p><code>$("#img1").responsiveImg();</code></p>
+<div style="width:50%;">
+	<img id="img1" src="images/windowImage.jpg" style="max-width:100%;" />
 </div>
 
 <h2>Custom Breakpoints</h2>
-<p>Specify sizes at which images should change, and have a custom suffix appended to image filenames for each breakpoint.</p>
-<code>$("#img2").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600}});</code>
-<div style="width:40%; border:2px dotted rgba(0,0,0,.5);">
-	<img id="img2" src="images/image.png" style="max-width:100%;" />
-</div>
+<p>Specify custom breakpoints, each with a custom suffix.</p>
+<p>This is useful if you actually need to change the image at certain breakpoints, rather than just resize it. (Remember, you can create the image manually and put it on the server, and Responsive Img will automatically use that instead of creating a new one.)</p>
+<p><code>$("#img2,#img3").responsiveImg({
+	breakpoints:{
+    	"_400":400,
+        "_200":200,
+        "_800":800
+    }
+});</code></p>
+<div style="width:50%; float:left;"><img id="img2" src="images/image.png" style="max-width:98%;" /></div>
+<div style="width:50%; float:left;"><img id="img3" src="images/image.png" style="max-width:98%;" /></div>
 
-<h2>Use a Placeholder Image</h2>
-<p>For faster loading, especially on mobile phones, you'll need to set the src attribute of all images to a loading icon or a small white pixel (or whatever you want, obviously). Then use another attribute (I recommend data-src to specify the path to the image file).</p>
-<p>Unforutnately, the only way to prevent loading an src attribute is in the HTML. Even if we change it before the image loads, the original image still loads.</p>
-<code>$("#img3").responsiveImg({breakpoints:{"_400":400,"_200":200,"_800":800,"_600":600},"srcAttribute":"data-src"});</code>
-<div style="width:80%; border:2px dotted rgba(0,0,0,.5);">
-	<img id="img3" src="images/ajax-loader.gif" data-src="images/image.png" style="max-width:100%;" />
+<h2>The Placeholder Image</h2>
+<p>For faster loading, especially on mobile phones, you'll need to set the src attribute of each image to a loading icon or a single pixel image (or whatever you want, obviously). Then use another attribute (I recommend <strong>data-src</strong>) to store the original src value.</p>
+<p>Unforutnately, changing the src value, even before the image is loaded, still causes the browser to load the image. The only way to prevent the original image from loading is to change the src value in the original HTML.</p>
+<p><code>$("#img4").responsiveImg({
+    srcAttribute:"data-src"
+});</code></p>
+<div>
+	<img id="img4" src="images/ajax-loader.gif" data-src="images/windowImage.jpg" style="max-width:100%;" />
 </div>
 
 </body>
