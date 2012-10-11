@@ -61,8 +61,12 @@ $(function() {
         "_800":800
     }
 });</code></p>
-<div style="width:50%; float:left;"><img id="img2" src="images/image.png" style="max-width:98%;" /></div>
-<div style="width:50%; float:left;"><img id="img3" src="images/image.png" style="max-width:98%;" /></div>
+<!-- <div style="width:50%; float:left;"><img id="img2" src="images/image.png" style="max-width:98%;" /></div>
+<div style="width:50%; float:left;"><img id="img3" src="images/image.png" style="max-width:98%;" /></div> -->
+<div>
+	<img id="img2" src="images/image.png" style="max-width:49%;" />
+	<img id="img3" src="images/image.png" style="max-width:49%;" />
+</div>
 
 <h2>The Placeholder Image</h2>
 <p>For faster loading, especially on mobile phones, you'll need to set the src attribute of each image to a loading icon or a single pixel image (or whatever you want, obviously). Then use another attribute (I recommend <strong>data-src</strong>) to store the original src value.</p>

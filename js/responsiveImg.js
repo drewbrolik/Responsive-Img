@@ -4,9 +4,9 @@
 		
 		var options = { //- set default options
 			breakpoints : {
-				"_mobile":360,
-				"_tablet":780,
-				"_desktop":900
+				"_small":360,
+				"_medium":780,
+				"_large":900
 			},
 			srcAttribute : "src",
 			createNewImages : true
@@ -29,7 +29,14 @@
 			$(window).resize(function() {
 				resizeImage($this,breakpoints,src,extension);
 			});
-									
+			
+			/*
+			var img = new Image(); //- get max width of original image (so we don't size up)...  sets a data-max-width attribute on the image that the resizeImage function uses whenever it exists
+			img.src = src;
+			var maxWidth = img.width;
+			img.onload = function() { maxWidth = img.width; $this.attr("data-max-width",maxWidth); };
+			*/
+								
 		});
 		
 		function resizeImage($img,breakpoints,src,extension) {
@@ -37,8 +44,13 @@
 			var $this = $img;
 			
 			var containerWidth = $this.parent().width(); //- get container width
+			
+			var cssMaxWidth = $this.css("maxWidth"); //- if we know an image's max width is a percentage, we can use smaller images because we know the maximum size is smaller than the container width
+			if (cssMaxWidth.charAt( cssMaxWidth.length-1 ) == "%") {
+				containerWidth *= parseInt(cssMaxWidth)*.01;
+			}
 					
-			var breakpoint = breakpoints.default; //- set default breakpoint (where we started)
+			var breakpoint = breakpoints.default; //- set default breakpoint (size when the page loaded)
 			if (containerWidth > breakpoint) { breakpoint = $(window).width(); } //- account for sizing the window up
 			
 			var suffix = ""; //- set up the suffix variable to add to the img src
@@ -62,7 +74,6 @@
 			var img = new Image();
 			img.onload = function() { //- image exists
 				$this.attr("src",newSrc); //- replace current image with suffixed image
-				//- destroy img here?
 			};
 			img.onerror = function() { //- image doesn't exist
 				if (options.createNewImages) {
