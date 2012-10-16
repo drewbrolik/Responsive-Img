@@ -48,8 +48,13 @@
 			var cssMaxWidth = $this.css("maxWidth"); //- if we know an image's max width is a percentage, we can use smaller images because we know the maximum size is smaller than the container width
 			if (cssMaxWidth.charAt( cssMaxWidth.length-1 ) == "%") {
 				containerWidth *= parseInt(cssMaxWidth)*.01;
+			} else {		
+				var percentageOfContainer = ( 100 * parseFloat($this.css('width')) / containerWidth ); //- account for max-width or width styles
+				if (percentageOfContainer > 0 && percentageOfContainer < 100) {
+					containerWidth *= percentageOfContainer*.01;
+				}
 			}
-					
+			
 			var breakpoint = breakpoints.default; //- set default breakpoint (size when the page loaded)
 			if (containerWidth > breakpoint) { breakpoint = $(window).width(); } //- account for sizing the window up
 			
