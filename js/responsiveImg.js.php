@@ -1,3 +1,32 @@
+<?php /*
+Responsive Img jQuery Plugin
+Version 1
+Oct 20th, 2012
+
+Documentation: http://responsiveimg.com
+Repository: https://github.com/drewbrolik/Responsive-Img
+
+Copyright 2012 Drew Thomas
+
+Dual licensed under the MIT and GPL licenses:
+https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
+http://www.gnu.org/licenses/gpl.txt
+
+This file is part of Responsive Img.
+
+Responsive Img is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Responsive Img is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
+*/ ?>
 <?php
 
 function makeImage($file_in,$file_out,$size,$orientation="") { //- function to make a new image
@@ -61,6 +90,8 @@ function makeImage($file_in,$file_out,$size,$orientation="") { //- function to m
 }
 
 if (isset($_REQUEST['makeImage'])) {
+	
+	$baseURL = $_REQUEST['baseURL']; if (!$baseURL) { $baseURL = "/"; }
 	
 	makeImage("../".$_REQUEST['fileIn'],"../".$_REQUEST['fileOut'],$_REQUEST['size'],"w"); //- make the new image!
 		

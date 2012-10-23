@@ -1,3 +1,33 @@
+/*
+Responsive Img jQuery Plugin
+Version 1
+Oct 20th, 2012
+
+Documentation: http://responsiveimg.com
+Repository: https://github.com/drewbrolik/Responsive-Img
+
+Copyright 2012 Drew Thomas
+
+Dual licensed under the MIT and GPL licenses:
+https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
+http://www.gnu.org/licenses/gpl.txt
+
+This file is part of Responsive Img.
+
+Responsive Img is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Responsive Img is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 (function($) {
 
 	$.fn.responsiveImg = function(additionalOptions) {
@@ -9,9 +39,24 @@
 				"_large":900
 			},
 			srcAttribute : "src",
-			createNewImages : true
+			baseURL:"/",
+			pathToPHP:"js",
+			createNewImages:true
 		}
 		options = $.extend(options, additionalOptions ); //- override default options with user-supplied options
+		
+		var pathToPHP = options.pathToPHP; //- format path to php
+		if (pathToPHP.charAt( pathToPHP.length-1 ) !== "/") {
+			options["pathToPHP"] = pathToPHP+"/";
+		}
+		var baseURL = options.baseURL; //- format path from root
+		if (baseURL.charAt( baseURL.length-1 ) !== "/") {
+			options["baseURL"] = baseURL+"/";
+		}
+		var baseURL = options.baseURL;
+		if (baseURL.charAt( 0 ) !== "/") {
+			options["baseURL"] = "/"+baseURL;
+		}
 		
 		$(this).each(function() { //- do it for 'em all
 			
@@ -29,13 +74,6 @@
 			$(window).resize(function() {
 				resizeImage($this,breakpoints,src,extension);
 			});
-			
-			/*
-			var img = new Image(); //- get max width of original image (so we don't size up)...  sets a data-max-width attribute on the image that the resizeImage function uses whenever it exists
-			img.src = src;
-			var maxWidth = img.width;
-			img.onload = function() { maxWidth = img.width; $this.attr("data-max-width",maxWidth); };
-			*/
 								
 		});
 		
@@ -83,8 +121,8 @@
 			img.onerror = function() { //- image doesn't exist
 				if (options.createNewImages) {
 					$.ajax({ //- ajax to a file to create a new image at the size we need
-						url:"js/responsiveImg.js.php",
-						data:{ makeImage:1,fileIn:src,fileOut:newSrc,size:size },
+						url:options.pathToPHP+"responsiveImg.js.php",
+						data:{ makeImage:1,fileIn:src,fileOut:newSrc,size:size,baseURL:options.baseURL },
 						dataType:"html",
 						success:function(data) {
 							this.src = newSrc; //- see if we get the image or get an error
