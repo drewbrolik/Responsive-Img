@@ -91,9 +91,9 @@ function makeImage($file_in,$file_out,$size,$orientation="") { //- function to m
 
 if (isset($_REQUEST['makeImage'])) {
 	
-	$baseURL = $_REQUEST['baseURL']; if (!$baseURL) { $baseURL = "/"; }
+	$baseURL = $_REQUEST['baseURL'];
 	
-	makeImage("../".$_REQUEST['fileIn'],"../".$_REQUEST['fileOut'],$_REQUEST['size'],"w"); //- make the new image!
+	makeImage($baseURL.$_REQUEST['fileIn'],$baseURL.$_REQUEST['fileOut'],$_REQUEST['size'],"w"); //- make the new image!
 		
 }
 

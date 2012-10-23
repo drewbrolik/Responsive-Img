@@ -39,23 +39,20 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 				"_large":900
 			},
 			srcAttribute : "src",
-			baseURL:"/",
 			pathToPHP:"js",
 			createNewImages:true
 		}
 		options = $.extend(options, additionalOptions ); //- override default options with user-supplied options
 		
-		var pathToPHP = options.pathToPHP; //- format path to php
+		var pathToPHP = options.pathToPHP; //- format path from image to php
 		if (pathToPHP.charAt( pathToPHP.length-1 ) !== "/") {
 			options["pathToPHP"] = pathToPHP+"/";
 		}
-		var baseURL = options.baseURL; //- format path from root
-		if (baseURL.charAt( baseURL.length-1 ) !== "/") {
-			options["baseURL"] = baseURL+"/";
-		}
-		var baseURL = options.baseURL;
-		if (baseURL.charAt( 0 ) !== "/") {
-			options["baseURL"] = "/"+baseURL;
+		
+		var numberOfSlashes = pathToPHP.split("/"); //- get the path from php to image
+		var baseURL = "";
+		for (i=0;i<numberOfSlashes.length;i++) {
+			baseURL += "../";
 		}
 		
 		$(this).each(function() { //- do it for 'em all
@@ -122,7 +119,7 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 				if (options.createNewImages) {
 					$.ajax({ //- ajax to a file to create a new image at the size we need
 						url:options.pathToPHP+"responsiveImg.js.php",
-						data:{ makeImage:1,fileIn:src,fileOut:newSrc,size:size,baseURL:options.baseURL },
+						data:{ makeImage:1,fileIn:src,fileOut:newSrc,size:size,baseURL:baseURL },
 						dataType:"html",
 						success:function(data) {
 							this.src = newSrc; //- see if we get the image or get an error
