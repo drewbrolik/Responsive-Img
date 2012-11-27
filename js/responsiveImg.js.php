@@ -1,7 +1,7 @@
 <?php /*
 Responsive Img jQuery Plugin
-Version 1
-Oct 20th, 2012
+Version 1.1
+Nov 26th, 2012
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -92,8 +92,17 @@ function makeImage($file_in,$file_out,$size,$orientation="") { //- function to m
 if (isset($_REQUEST['makeImage'])) {
 	
 	$baseURL = $_REQUEST['baseURL'];
+	$fileIn = $_REQUEST['fileIn'];
+	$fileOut = $_REQUEST['fileOut'];
+	$size = $_REQUEST['size'];
 	
-	makeImage($baseURL.$_REQUEST['fileIn'],$baseURL.$_REQUEST['fileOut'],$_REQUEST['size'],"w"); //- make the new image!
+	$imageSize = getimagesize($baseURL.$fileIn); //- get the image's original size to prevent sizing up
+	if ($size < $imageSize[0]) {
+		makeImage($baseURL.$fileIn,$baseURL.$fileOut,$size,"w"); //- make the new image!
+		echo "1"; //- basically, return true
+	} else {
+		echo "0"; //- basically, return false
+	}
 		
 }
 

@@ -1,7 +1,7 @@
 /*
 Responsive Img jQuery Plugin
-Version 1
-Oct 20th, 2012
+Version 1.1
+Nov 26th, 2012
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -122,7 +122,11 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 						data:{ makeImage:1,fileIn:src,fileOut:newSrc,size:size,baseURL:baseURL },
 						dataType:"html",
 						success:function(data) {
-							this.src = newSrc; //- see if we get the image or get an error
+							if (parseInt(data) > 0) {
+								this.src = newSrc; //- use the newly created images
+							} else {
+								this.src = src; //- image would get sized up, so we didn't create it
+							}
 						},
 						error:function() {
 							// nothing
