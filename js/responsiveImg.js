@@ -1,7 +1,7 @@
 /*
 Responsive Img jQuery Plugin
-Version 1.1
-Nov 26th, 2012
+Version 1.2
+Dec 20th, 2012
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -26,6 +26,15 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+Changelog
+10/20/12 Initial plugin (1)
+
+11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
+
+12/20/12 Added support for pixel ratio, fixed an iOS bug (1.2)
 */
 
 (function($) {
@@ -63,7 +72,7 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 			var extension = src.split('.').pop(); //- get the file extension so we can add the suffix before the extension
 			
 			var breakpoints = options.breakpoints; //- create a new variable for breakpoints object			
-			defaultBreakpoint = { "default":1000000 } //- set a "default" breakpoint for anything larger than the largest breakpoint
+			defaultBreakpoint = { "default_bp":1000000 } //- set a "default" breakpoint for anything larger than the largest breakpoint
 			breakpoints = $.extend(breakpoints,defaultBreakpoint);
 			
 			resizeImage($this,breakpoints,src,extension);
@@ -90,10 +99,16 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 				}
 			}
 			
-			var breakpoint = breakpoints.default; //- set default breakpoint (size when the page loaded)
+			var breakpoint = breakpoints.default_bp; //- set default breakpoint (size when the page loaded)
 			if (containerWidth > breakpoint) { breakpoint = $(window).width(); } //- account for sizing the window up
 			
 			var suffix = ""; //- set up the suffix variable to add to the img src
+			
+			if (window.devicePixelRatio >= 2) { //- account for retina and other pixel sizes
+				containerWidth *= 2;
+			} else if (window.devicePixelRatio >= 1.5) {
+				containerWidth *= 1.5;
+			}
 			
 			$.each(breakpoints,function(index,value) { //- loop through until we find the smallest "value" that's larger than the containerWidth
 				if (value > containerWidth && value < breakpoint) {

@@ -1,7 +1,7 @@
 <?php /*
 Responsive Img jQuery Plugin
-Version 1.1
-Nov 26th, 2012
+Version 1.2
+Dec 20th, 2012
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -26,6 +26,15 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
+*/ 
+
+/*
+Changelog
+10/20/12 Initial plugin (1)
+
+11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
+
+12/20/12 Added support for pixel ratio, fixed an iOS bug (1.2)
 */ ?>
 <?php
 
