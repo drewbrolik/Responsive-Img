@@ -5,7 +5,7 @@ Responsive Img is a jQuery plugin that changes an image's src attribute based on
 
 The plugin requires only 2 files.
 
-## Documentation
+<a href='http://responsiveimg.com'>ResponsiveImg.com</a>
 
 ### Basic usage
 
