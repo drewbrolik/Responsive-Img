@@ -1,7 +1,7 @@
 /*
 Responsive Img jQuery Plugin
-Version 1.2
-Dec 20th, 2012
+Version 1.25
+Dec 22nd, 2012
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -35,6 +35,8 @@ Changelog
 11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
 
 12/20/12 Added support for pixel ratio, fixed an iOS bug (1.2)
+
+12/22/12 Added a jpeg quality option (1.25)
 */
 
 (function($) {
@@ -49,7 +51,8 @@ Changelog
 			},
 			srcAttribute : "src",
 			pathToPHP:"js",
-			createNewImages:true
+			createNewImages:true,
+			jpegQuality:100
 		}
 		options = $.extend(options, additionalOptions ); //- override default options with user-supplied options
 		
@@ -134,7 +137,7 @@ Changelog
 				if (options.createNewImages) {
 					$.ajax({ //- ajax to a file to create a new image at the size we need
 						url:options.pathToPHP+"responsiveImg.js.php",
-						data:{ makeImage:1,fileIn:src,fileOut:newSrc,size:size,baseURL:baseURL },
+						data:{ makeImage:1,fileIn:src,fileOut:newSrc,size:size,baseURL:baseURL,jpegQuality:options.jpegQuality },
 						dataType:"html",
 						success:function(data) {
 							if (parseInt(data) > 0) {

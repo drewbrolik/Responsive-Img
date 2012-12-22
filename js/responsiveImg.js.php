@@ -1,7 +1,7 @@
 <?php /*
 Responsive Img jQuery Plugin
-Version 1.2
-Dec 20th, 2012
+Version 1.25
+Dec 22nd, 2012
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -35,10 +35,12 @@ Changelog
 11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
 
 12/20/12 Added support for pixel ratio, fixed an iOS bug (1.2)
+
+12/22/12 Added a jpeg quality option (1.25)
 */ ?>
 <?php
 
-function makeImage($file_in,$file_out,$size,$orientation="") { //- function to make a new image
+function makeImage($file_in,$file_out,$size,$orientation="",$jpegQuality=100) { //- function to make a new image
 		
 	// make sure it's valid
 	list($w, $h) = @getimagesize($file_in);	
@@ -85,7 +87,7 @@ function makeImage($file_in,$file_out,$size,$orientation="") { //- function to m
 	imagecopyresampled($tmp_img, $src_img, 0,0,0,0,$new_w,$new_h,$w,$h);
 	
 	if (exif_imagetype($file_in) == IMAGETYPE_JPEG) {
-		imagejpeg($tmp_img, $file_out, 100);
+		imagejpeg($tmp_img, $file_out, $jpegQuality);
 	} else if (exif_imagetype($file_in) == IMAGETYPE_GIF) {
 		imagegif($tmp_img, $file_out);
 	} else if (exif_imagetype($file_in) == IMAGETYPE_PNG) {
@@ -104,10 +106,11 @@ if (isset($_REQUEST['makeImage'])) {
 	$fileIn = $_REQUEST['fileIn'];
 	$fileOut = $_REQUEST['fileOut'];
 	$size = $_REQUEST['size'];
+	$jpegQuality = $_REQUEST['jpegQuality'];
 	
 	$imageSize = getimagesize($baseURL.$fileIn); //- get the image's original size to prevent sizing up
 	if ($size < $imageSize[0]) {
-		makeImage($baseURL.$fileIn,$baseURL.$fileOut,$size,"w"); //- make the new image!
+		makeImage($baseURL.$fileIn,$baseURL.$fileOut,$size,"w",$jpegQuality); //- make the new image!
 		echo "1"; //- basically, return true
 	} else {
 		echo "0"; //- basically, return false
