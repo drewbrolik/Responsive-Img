@@ -22,7 +22,8 @@ $("img").responsiveImg({
   },
   srcAttribute : "src",
   pathToPHP : "js",
-  createNewImages : true
+  createNewImages : true,
+  jpegQuality : 100
 });
 ```
 
@@ -37,6 +38,7 @@ $("img").responsiveImg({
   },
   srcAttribute : "src",
   pathToPHP : "js",
-  createNewImages : true
+  createNewImages : true,
+  jpegQuality : 100
 }
 ```
