@@ -5,7 +5,7 @@
   "keywords": [
     "responsive",
     "image",
-    "responsive images",
+    "images",
     "retina"
   ],
   "version": "1.2.5",
@@ -18,13 +18,12 @@
       "type": "MIT",
       "url": "https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt"
     },
-	{
-	 "type": "GPLv3",
-     "url": "http://www.gnu.org/licenses/gpl.txt"
-	}
+    {
+     "type": "GPLv3",
+       "url": "http://www.gnu.org/licenses/gpl.txt"
+    }
   ],
   "homepage": "http://responsiveimg.com",
-  "demo": "http://responsiveimg.com/#noOptions",
   "dependencies": {
     "jquery": ">=1.6"
   }
