@@ -1,12 +1,12 @@
 <?php /*
 Responsive Img jQuery Plugin
-Version 1.25
-Dec 22nd, 2012
+Version 1.3
+Mar 3rd, 2013
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
 
-Copyright 2012 Drew Thomas
+Copyright 2012 - 2013 Drew Thomas and Brolik
 
 Dual licensed under the MIT and GPL licenses:
 https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
@@ -30,13 +30,15 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 
 /*
 Changelog
-10/20/12 Initial plugin (1)
+3/2/13   Fixed placeholder image bug: plugin will now switch to the original image if it's smaller than the breakpoint when using a placeholder image. Plugin also now fires on window load as well as resize (1.3)
 
-11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
+12/22/12 Added a jpeg quality option (1.25)
 
 12/20/12 Added support for pixel ratio, fixed an iOS bug (1.2)
 
-12/22/12 Added a jpeg quality option (1.25)
+11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
+
+10/20/12 Initial plugin (1)
 */ ?>
 <?php
 
@@ -113,7 +115,7 @@ if (isset($_REQUEST['makeImage'])) {
 		makeImage($baseURL.$fileIn,$baseURL.$fileOut,$size,"w",$jpegQuality); //- make the new image!
 		echo "1"; //- basically, return true
 	} else {
-		echo "0"; //- basically, return false
+		echo "0 target width is ".$size." and original width is ".$imageSize[0]; //- basically, return false
 	}
 		
 }

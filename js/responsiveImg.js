@@ -1,12 +1,12 @@
 /*
 Responsive Img jQuery Plugin
-Version 1.25
-Dec 22nd, 2012
+Version 1.3
+Mar 3rd, 2013
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
 
-Copyright 2012 Drew Thomas
+Copyright 2012 - 2013 Drew Thomas and Brolik
 
 Dual licensed under the MIT and GPL licenses:
 https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
@@ -28,15 +28,17 @@ You should have received a copy of the GNU General Public License
 along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
+/* 
 Changelog
-10/20/12 Initial plugin (1)
+3/2/13   Fixed placeholder image bug: plugin will now switch to the original image if it's smaller than the breakpoint when using a placeholder image. Plugin also now fires on window load as well as resize (1.3)
 
-11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
+12/22/12 Added a jpeg quality option (1.25)
 
 12/20/12 Added support for pixel ratio, fixed an iOS bug (1.2)
 
-12/22/12 Added a jpeg quality option (1.25)
+11/26/12 Fixed image size up issue: plugin won't create new images that are larger than the original image (1.1)
+
+10/20/12 Initial plugin (1)
 */
 
 (function($) {
@@ -80,7 +82,7 @@ Changelog
 			
 			resizeImage($this,breakpoints,src,extension);
 						
-			$(window).resize(function() {
+			$(window).on("resize load",function() {
 				resizeImage($this,breakpoints,src,extension);
 			});
 								
@@ -112,7 +114,7 @@ Changelog
 			} else if (window.devicePixelRatio >= 1.5) {
 				containerWidth *= 1.5;
 			}
-			
+
 			$.each(breakpoints,function(index,value) { //- loop through until we find the smallest "value" that's larger than the containerWidth
 				if (value > containerWidth && value < breakpoint) {
 					breakpoint = value;
@@ -130,10 +132,10 @@ Changelog
 			var $this = $img;
 			
 			var img = new Image();
-			img.onload = function() { //- image exists
+			$(img).on("load",function() { //- image exists
 				$this.attr("src",newSrc); //- replace current image with suffixed image
-			};
-			img.onerror = function() { //- image doesn't exist
+			});
+			$(img).on("error",function() { //- image doesn't exist
 				if (options.createNewImages) {
 					$.ajax({ //- ajax to a file to create a new image at the size we need
 						url:options.pathToPHP+"responsiveImg.js.php",
@@ -141,9 +143,9 @@ Changelog
 						dataType:"html",
 						success:function(data) {
 							if (parseInt(data) > 0) {
-								this.src = newSrc; //- use the newly created images
+								$this.attr("src",newSrc); //- use the newly created images
 							} else {
-								this.src = src; //- image would get sized up, so we didn't create it
+								$this.attr("src",src); //- image would get sized up, so we didn't create it
 							}
 						},
 						error:function() {
@@ -151,7 +153,7 @@ Changelog
 						}
 					});
 				}
-			};
+			});
 			img.src = newSrc; //- see if we get the image or get an error
 		}
 		
