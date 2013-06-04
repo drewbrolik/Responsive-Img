@@ -45,15 +45,16 @@ Changelog
 function makeImage($file_in,$file_out,$size,$orientation="",$jpegQuality=100) { //- function to make a new image
 		
 	// make sure it's valid
-	list($w, $h) = @getimagesize($file_in);	
+	list($w, $h, $type) = @getimagesize($file_in);
 	if($w < 1) return false;
 	
+	$src_img = null;
 	// find image type and create temp image and variable
-	if (exif_imagetype($file_in) == IMAGETYPE_JPEG) {
+	if ($type == IMAGETYPE_JPEG) {
 		$src_img = @imagecreatefromjpeg($file_in);
-	} else if (exif_imagetype($file_in) == IMAGETYPE_GIF) {
+	} else if ($type == IMAGETYPE_GIF) {
 		$src_img = @imagecreatefromgif($file_in);
-	} else if (exif_imagetype($file_in) == IMAGETYPE_PNG) {
+	} else if ($type == IMAGETYPE_PNG) {
 		$src_img = @imagecreatefrompng($file_in);
 	}
 	if(!$src_img) return false;
@@ -88,11 +89,11 @@ function makeImage($file_in,$file_out,$size,$orientation="",$jpegQuality=100) { 
 	// put uploaded image onto temp image
 	imagecopyresampled($tmp_img, $src_img, 0,0,0,0,$new_w,$new_h,$w,$h);
 	
-	if (exif_imagetype($file_in) == IMAGETYPE_JPEG) {
+	if ($type == IMAGETYPE_JPEG) {
 		imagejpeg($tmp_img, $file_out, $jpegQuality);
-	} else if (exif_imagetype($file_in) == IMAGETYPE_GIF) {
+	} else if ($type == IMAGETYPE_GIF) {
 		imagegif($tmp_img, $file_out);
-	} else if (exif_imagetype($file_in) == IMAGETYPE_PNG) {
+	} else if ($type == IMAGETYPE_PNG) {
 		imagealphablending($tmp_img, false);
 		imagesavealpha($tmp_img, true);
 		imagepng($tmp_img, $file_out);
