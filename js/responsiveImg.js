@@ -1,7 +1,7 @@
 /*
 Responsive Img jQuery Plugin
-Version 1.3
-Mar 3rd, 2013
+Version 1.4
+Jun 15th, 2013
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -30,6 +30,8 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 
 /* 
 Changelog
+6/15/13 Added CSS background functionality, added a callback option, and set default jpegQuality to 90 (1.4)
+
 3/2/13   Fixed placeholder image bug: plugin will now switch to the original image if it's smaller than the breakpoint when using a placeholder image. Plugin also now fires on window load as well as resize (1.3)
 
 12/22/12 Added a jpeg quality option (1.25)
@@ -54,7 +56,8 @@ Changelog
 			srcAttribute : "src",
 			pathToPHP:"js",
 			createNewImages:true,
-			jpegQuality:100
+			jpegQuality:90,
+			callback:false
 		}
 		options = $.extend(options, additionalOptions ); //- override default options with user-supplied options
 		
@@ -156,6 +159,10 @@ Changelog
 							} else {
 								setSource($this, src); //- image would get sized up, so we didn't create it
 							}
+							
+							// callback
+							if (typeof options.callback == 'function') { // make sure the callback is a function
+						    options.callback.call(this); // brings the scope to the callback
 						},
 						error:function() {
 							// nothing
