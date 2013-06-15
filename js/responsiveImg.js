@@ -77,7 +77,7 @@ Changelog
 			var extension = src.split('.').pop(); //- get the file extension so we can add the suffix before the extension
 			
 			var breakpoints = options.breakpoints; //- create a new variable for breakpoints object			
-			defaultBreakpoint = { "default_bp":1000000 } //- set a "default" breakpoint for anything larger than the largest breakpoint
+			var defaultBreakpoint = { "default_bp":1000000 }; //- set a "default" breakpoint for anything larger than the largest breakpoint
 			breakpoints = $.extend(breakpoints,defaultBreakpoint);
 			
 			resizeImage($this,breakpoints,src,extension);
@@ -88,20 +88,29 @@ Changelog
 								
 		});
 		
-		function resizeImage($img,breakpoints,src,extension) {
+		function resizeImage($tag,breakpoints,src,extension) {
 			
-			var $this = $img;
+			var $this = $tag;
+			var containerWidth = 0;
 			
-			var containerWidth = $this.parent().width(); //- get container width
+			if($this.prop("tagName") == "IMG"){ // find out if it's an image
 			
-			var cssMaxWidth = $this.css("maxWidth"); //- if we know an image's max width is a percentage, we can use smaller images because we know the maximum size is smaller than the container width
-			if (cssMaxWidth.charAt( cssMaxWidth.length-1 ) == "%") {
-				containerWidth *= parseInt(cssMaxWidth)*.01;
-			} else {		
-				var percentageOfContainer = ( 100 * parseFloat($this.css('width')) / containerWidth ); //- account for max-width or width styles
-				if (percentageOfContainer > 0 && percentageOfContainer < 100) {
-					containerWidth *= percentageOfContainer*.01;
+				containerWidth = $this.parent().width(); //- get container width
+			
+				var cssMaxWidth = $this.css("maxWidth"); //- if we know an image's max width is a percentage, we can use smaller images because we know the maximum size is smaller than the container width
+				if (cssMaxWidth.charAt( cssMaxWidth.length-1 ) == "%") {
+					containerWidth *= parseInt(cssMaxWidth)*.01;
+				} else {		
+					var percentageOfContainer = ( 100 * parseFloat($this.css('width')) / containerWidth ); //- account for max-width or width styles
+					if (percentageOfContainer > 0 && percentageOfContainer < 100) {
+						containerWidth *= percentageOfContainer*.01;
+					}
 				}
+			
+			}else{ // or anything else
+
+				containerWidth = $this.width(); //- get container width
+
 			}
 			
 			var breakpoint = breakpoints.default_bp; //- set default breakpoint (size when the page loaded)
@@ -127,13 +136,13 @@ Changelog
 			
 		}
 		
-		function replaceImage($img,src,newSrc,size) {
+		function replaceImage($tag,src,newSrc,size) {
 					
-			var $this = $img;
+			var $this = $tag;
 			
 			var img = new Image();
 			$(img).on("load",function() { //- image exists
-				$this.attr("src",newSrc); //- replace current image with suffixed image
+				setSource($this, newSrc); //- replace current image with suffixed image
 			});
 			$(img).on("error",function() { //- image doesn't exist
 				if (options.createNewImages) {
@@ -143,9 +152,9 @@ Changelog
 						dataType:"html",
 						success:function(data) {
 							if (parseInt(data) > 0) {
-								$this.attr("src",newSrc); //- use the newly created images
+								setSource($this, newSrc); //- use the newly created images
 							} else {
-								$this.attr("src",src); //- image would get sized up, so we didn't create it
+								setSource($this, src); //- image would get sized up, so we didn't create it
 							}
 						},
 						error:function() {
@@ -155,6 +164,15 @@ Changelog
 				}
 			});
 			img.src = newSrc; //- see if we get the image or get an error
+		}
+		
+		function setSource($tag, src){
+			var $this = $tag;
+			if($this.prop("tagName") == "IMG"){ // find out if it's an image
+				$this.attr("src",src);
+			}else{ // or anything else
+				$this.css({"background-image":"url('"+src+"')"});
+			}
 		}
 		
 		return this;
