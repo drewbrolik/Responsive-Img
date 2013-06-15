@@ -162,7 +162,8 @@ Changelog
 							
 							// callback
 							if (typeof options.callback == 'function') { // make sure the callback is a function
-						    options.callback.call(this); // brings the scope to the callback
+						    	options.callback.call(this); // brings the scope to the callback
+							}
 						},
 						error:function() {
 							// nothing
