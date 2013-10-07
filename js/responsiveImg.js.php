@@ -26,7 +26,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
-*/ 
+*/
 
 /*
 Changelog
@@ -44,12 +44,45 @@ Changelog
 */ ?>
 <?php
 
+//by Gordon from http://stackoverflow.com/a/2638272
+function getRelativePath($from, $to) {
+	// some compatibility fixes for Windows paths
+	$from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
+	$to   = is_dir($to)   ? rtrim($to, '\/') . '/'   : $to;
+	$from = str_replace('\\', '/', $from);
+	$to   = str_replace('\\', '/', $to);
+
+	$from     = explode('/', $from);
+	$to       = explode('/', $to);
+	$relPath  = $to;
+
+	foreach($from as $depth => $dir) {
+		// find first non-matching dir
+		if($dir === $to[$depth]) {
+			// ignore this directory
+			array_shift($relPath);
+		} else {
+			// get number of remaining dirs to $from
+			$remaining = count($from) - $depth;
+			if($remaining > 1) {
+				// add traversals up to first matching dir
+				$padLength = (count($relPath) + $remaining - 1) * -1;
+				$relPath = array_pad($relPath, $padLength, '..');
+				break;
+			} else {
+				$relPath[0] = './' . $relPath[0];
+			}
+		}
+	}
+	return implode('/', $relPath);
+}
+
 function makeImage($file_in,$file_out,$size,$orientation="",$jpegQuality=100) { //- function to make a new image
-		
+
 	// make sure it's valid
 	list($w, $h, $type) = @getimagesize($file_in);
 	if($w < 1) return false;
-	
+
 	$src_img = null;
 	// find image type and create temp image and variable
 	if ($type == IMAGETYPE_JPEG) {
@@ -60,7 +93,7 @@ function makeImage($file_in,$file_out,$size,$orientation="",$jpegQuality=100) { 
 		$src_img = @imagecreatefrompng($file_in);
 	}
 	if(!$src_img) return false;
-	
+
 	// choose which side to change the size of: width or height, based on parameter... if neither w or h, then use whichever is longer
 	if ($orientation == "w") {
 		$new_w = $size;
@@ -77,20 +110,20 @@ function makeImage($file_in,$file_out,$size,$orientation="",$jpegQuality=100) { 
 			$new_h = $h * ($size/$w);
 		}
 	}
-	
+
 	// create temp image
 	$tmp_img = imagecreatetruecolor($new_w, $new_h);
 	$white = imagecolorallocate($tmp_img, 255, 255, 255);
 	imagefill($tmp_img, 0, 0, $white);
-	
+
 	// make the new temp image all transparent
-	imagecolortransparent($tmp_img, $white); 
+	imagecolortransparent($tmp_img, $white);
 	imagealphablending($tmp_img, false);
 	imagesavealpha($tmp_img, true);
-	
+
 	// put uploaded image onto temp image
 	imagecopyresampled($tmp_img, $src_img, 0,0,0,0,$new_w,$new_h,$w,$h);
-	
+
 	if ($type == IMAGETYPE_JPEG) {
 		imagejpeg($tmp_img, $file_out, $jpegQuality);
 	} else if ($type == IMAGETYPE_GIF) {
@@ -100,27 +133,29 @@ function makeImage($file_in,$file_out,$size,$orientation="",$jpegQuality=100) { 
 		imagesavealpha($tmp_img, true);
 		imagepng($tmp_img, $file_out);
 	}
-	
+
 	imagedestroy($tmp_img);
 	return true;
 }
 
 if (isset($_REQUEST['makeImage'])) {
-	
-	$baseURL = $_REQUEST['baseURL'];
-	$fileIn = $_REQUEST['fileIn'];
-	$fileOut = $_REQUEST['fileOut'];
+	// get the relative path from this file to the images
+	$baseURL =  @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] :  'https://'.$_SERVER["SERVER_NAME"];
+	$self = $baseURL . $_SERVER['PHP_SELF'];
+	$fileIn = getRelativePath($self, $baseURL . $_REQUEST['fileIn']);
+	$fileOut = getRelativePath($self, $baseURL . $_REQUEST['fileOut']);
+
 	$size = $_REQUEST['size'];
 	$jpegQuality = $_REQUEST['jpegQuality'];
-	
-	$imageSize = getimagesize($baseURL.$fileIn); //- get the image's original size to prevent sizing up
+
+	$imageSize = getimagesize($fileIn); //- get the image's original size to prevent sizing up
 	if ($size < $imageSize[0]) {
-		makeImage($baseURL.$fileIn,$baseURL.$fileOut,$size,"w",$jpegQuality); //- make the new image!
+		makeImage($fileIn, $fileOut,$size,"w",$jpegQuality); //- make the new image!
 		echo "1"; //- basically, return true
 	} else {
 		echo "0 target width is ".$size." and original width is ".$imageSize[0]; //- basically, return false
 	}
-		
+
 }
 
 ?>
