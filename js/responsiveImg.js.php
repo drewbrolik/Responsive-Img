@@ -1,7 +1,7 @@
 <?php /*
 Responsive Img jQuery Plugin
-Version 1.4
-Jun 15th, 2013
+Version 1.5
+Nov 23rd, 2013
 
 Documentation: http://responsiveimg.com
 Repository: https://github.com/drewbrolik/Responsive-Img
@@ -30,6 +30,8 @@ along with Responsive Img.  If not, see <http://www.gnu.org/licenses/>.
 
 /*
 Changelog
+11/23/13 Removed 'baseurl' method for image path and plugin will now find the relative path with php instead (1.5)
+
 6/15/13 Added CSS background functionality, added a callback option, and set default jpegQuality to 90 (1.4)
 
 3/2/13   Fixed placeholder image bug: plugin will now switch to the original image if it's smaller than the breakpoint when using a placeholder image. Plugin also now fires on window load as well as resize (1.3)
